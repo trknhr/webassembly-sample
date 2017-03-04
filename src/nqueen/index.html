@@ -1,0 +1,60 @@
+<html>
+    <head>
+    </head>
+    <body>
+        JavaScript
+        <input type="number" id="jsn" min="1" max="26" value="8">
+        <input type="button" id="jsrun" value="JavaScript execute"/>
+        <input type="button" id="wasmrun" value="Wasm execute" />
+
+        <script src="nqueensjs.js"></script>
+        <script>
+            document.getElementById("jsrun").addEventListener("click",
+                () => {
+                console.log(document.getElementById("jsn").value)
+                const n = parseInt(document.getElementById("jsn").value)
+                const start = new Date().getTime()
+                const res = countNQueens(n)
+                console.log("Spent time", new Date().getTime() - start)
+                console.log("res", res)
+            });
+            let countNQueensSolutionsWasm;
+
+            document.getElementById("wasmrun").addEventListener("click",
+                () => {
+                const n = parseInt(document.getElementById("jsn").value)
+                const start = new Date().getTime()
+                const res = countNQueensSolutionsWasm(n)
+                console.log("Spent time", new Date().getTime() - start)
+                console.log("res", res)
+            });
+            function loadWebAssembly(filename, imports) {
+
+                return fetch(filename)
+                        .then(response => response.arrayBuffer()).
+                then(buffer => WebAssembly.compile(buffer)).
+                then(module => {
+                    imports = imports || {};
+                    imports.env = imports.env || {};
+                    imports.env.memoryBase = imports.env.memoryBase || 0;
+                    imports.env.tableBase = imports.env.tableBase || 0;
+                    if (!imports.env.memory) {
+                        imports.env.memory = new WebAssembly.Memory({initial: 256});
+                    }
+                    if (!imports.env.table) {
+                        imports.env.table = new WebAssembly.Table({initial: 0, element: 'anyfunc'});
+                    }
+
+                    // Create the instance.
+                    return new WebAssembly.Instance(module, imports);
+                });
+            }
+
+            loadWebAssembly('nqueens.wasm').then(instance => {
+                const exports = instance.exports;
+                countNQueensSolutionsWasm = exports._countNQueensSolutions;
+            });
+
+        </script>
+    </body>
+</html>
