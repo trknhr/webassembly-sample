@@ -2,21 +2,25 @@
     <head>
     </head>
     <body>
-        JavaScript
-        <input type="number" id="jsn" min="1" max="26" value="8">
-        <input type="button" id="jsrun" value="JavaScript execute"/>
-        <input type="button" id="wasmrun" value="Wasm execute" />
+        <div style="margin: 10px">
+            Please input n
+            <input type="number" id="jsn" min="1" max="26" value="8">
+            <input type="button" id="jsrun" value="JavaScript execute"/>
+            <input type="button" id="wasmrun" value="Wasm execute" />
+        </div>
+
+        <div id="output">
+            Calculation time <span id="spent-time"></span> ms
+        </div>
 
         <script src="nqueensjs.js"></script>
         <script>
             document.getElementById("jsrun").addEventListener("click",
                 () => {
-                console.log(document.getElementById("jsn").value)
                 const n = parseInt(document.getElementById("jsn").value)
                 const start = new Date().getTime()
                 const res = countNQueens(n)
-                console.log("Spent time", new Date().getTime() - start)
-                console.log("res", res)
+                document.getElementById("spent-time").innerText = new Date().getTime() - start
             });
             let countNQueensSolutionsWasm;
 
@@ -25,8 +29,7 @@
                 const n = parseInt(document.getElementById("jsn").value)
                 const start = new Date().getTime()
                 const res = countNQueensSolutionsWasm(n)
-                console.log("Spent time", new Date().getTime() - start)
-                console.log("res", res)
+                document.getElementById("spent-time").innerText = new Date().getTime() - start
             });
             function loadWebAssembly(filename, imports) {
 

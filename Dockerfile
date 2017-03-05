@@ -19,7 +19,7 @@ RUN	apt-get -y install git build-essential cmake clang
 
 RUN git clone https://github.com/juj/emsdk.git
 RUN cd emsdk
-RUN git config http.postBuffer 52428800000
+RUN git config http.postBuffer 52428800000000
 
 RUN ./emsdk install sdk-incoming-64bit binaryen-master-64bit &&
         ./emsdk activate sdk-incoming-64bit binaryen-master-64bit
