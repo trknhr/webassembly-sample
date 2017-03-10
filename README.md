@@ -1,9 +1,10 @@
-# WebAssembly sample (c lang)
+# WebAssembly sample
 
-It use emcc
+You should install emscripten. This project uses it in compiling
 
-# make envelope
+# How to make environment at local
 
+Let's see this site. There is enough information.
 http://webassembly.org/getting-started/developers-guide/
 
 # build 
@@ -18,4 +19,4 @@ nqueen demo
 
 https://1984weed.github.io/webassembly-sample/src/nqueen/
 
-You click buttons, then spent time is showed as dom.
+You click buttons, then calculation time will be shown.
